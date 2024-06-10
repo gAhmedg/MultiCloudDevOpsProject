@@ -33,7 +33,7 @@ pipeline {
             steps {
                script{
                     sh '  chmod +x gradlew  '
-                    sh ' ./gradle wrapper '              
+                             
                      sh '  ./gradlew test '
 
 
