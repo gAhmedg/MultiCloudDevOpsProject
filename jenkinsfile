@@ -22,7 +22,7 @@ pipeline {
         stage('Scan') {
 
             steps {
-                withSonarQubeEnv(credentialsId: 'jenkins-sonar') {
+                withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
                      sh ' gradle wrapper ' 
                 }
             }
