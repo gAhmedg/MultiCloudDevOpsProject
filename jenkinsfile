@@ -31,36 +31,31 @@ pipeline {
         }
  
 
-  
-                    
-                
 
 
-
-
-        stage('build') {
-            steps {
-               script{
-                    sh '   chmod +x gradlew  '
+        // stage('build') {
+        //     steps {
+        //        script{
+        //             sh '   chmod +x gradlew  '
         
-                    sh '  ./gradlew build '
+        //             sh '  ./gradlew build '
                 
-               }
-            }
-        }
+        //        }
+        //     }
+        // }
 
-        stage('test') {
-            steps {
-               script{
-                    sh '  chmod +x gradlew  '
+        // stage('test') {
+        //     steps {
+        //        script{
+        //             sh '  chmod +x gradlew  '
                              
-                     sh '  ./gradlew test '
+        //              sh '  ./gradlew test '
 
 
                 
-               }
-            }
-        }
+        //        }
+        //     }
+        // }
 
         
         stage('Build and Push Docker Image') {
