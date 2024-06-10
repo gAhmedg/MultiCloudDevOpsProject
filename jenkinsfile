@@ -20,13 +20,18 @@ pipeline {
 
 
         stage('SonarQube Analysis') {
-    withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
-      sh "./gradlew sonarqube"
-    }
-  }
+
+            steps {
+               withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
+                    sh "./gradlew sonarqube"
+                    }
+            }
+        }
  
 
-
+  
+                    
+                
 
 
 
