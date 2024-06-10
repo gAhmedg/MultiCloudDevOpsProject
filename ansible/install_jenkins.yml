@@ -1,0 +1,6 @@
+# install_jenkins.yml
+- hosts: server1
+  become: yes
+  roles:
+  - jenkins
+
