@@ -1,14 +1,11 @@
-# tasks file for docker
-- name: Update all packages to the latest version
-  yum:
-    name: "*"
-    state: latest
 
+# roles/jenkins_docker/tasks/main.yml
+---
 - name: Install required dependencies
   yum:
-    name:
-    - git
-    - yum-utils
+    name: 
+      - git
+      - yum-utils
     state: present
 
 # Install Docker using yum package manager
@@ -23,10 +20,10 @@
 
 - name: Install Docker
   yum:
-    name:
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
     state: present
 
 - name: Start and enable Docker service
@@ -34,18 +31,18 @@
     name: docker
     state: started
     enabled: yes
-
-# Allow user to run Docker without sudo and add user to sudo group
+      ##########################################
 - name: Add ec2-user to Docker group
   user:
     name: ec2-user
-    groups: docker,sudo
+    groups: docker
     append: yes
 
 - name: Restart Docker service
   systemd:
     name: docker
     state: restarted
+  become: true
 
 - name: Verify Docker group membership
   shell: "groups ec2-user"
@@ -64,3 +61,7 @@
 - name: Display Docker version
   debug:
     msg: "{{ docker_version.stdout }}"
+
+
+
+

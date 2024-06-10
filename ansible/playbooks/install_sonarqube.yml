@@ -1,7 +1,7 @@
 ---
 # install_docker.yml
-- hosts: docker-server
+- hosts: sonarqube-server
   become: yes
   roles:
-  - docker
+  - sonarQube
 

@@ -1,53 +1,44 @@
-# tasks file for jenkins
-- name: Update all packages to the latest version
-  yum:
-    name: "*"
-    state: latest
 
-- name: Install required dependencies
-  yum:
-    name:
-    - git
-    - yum-utils
-    state: present
+    - name: Download Jenkins repository file
+      get_url:
+        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
+      become: true
 
-# Install OpenJDK 11
-- name: Add Amazon Corretto repository
-  yum_repository:
-    name: corretto
-    description: Amazon Corretto
-    baseurl: https://yum.corretto.aws
-    gpgcheck: yes
-    gpgkey: https://yum.corretto.aws/corretto.key
-    state: present
+    - name: Import Jenkins-CI key
+      shell: rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+      become: true
 
-- name: Install Amazon Corretto 11 (OpenJDK 11)
-  yum:
-    name: java-11-amazon-corretto-devel
-    state: present
+    - name: Install Java
+      yum:
+        name: java-17-amazon-corretto-devel
+        state: present
+      become: true
 
-# Install Jenkins
-- name: Add Jenkins repository
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: present
+      become: true
 
-  yum_repository:
-    name: jenkins
-    description: Jenkins
-    baseurl: http://pkg.jenkins.io/redhat-stable
-    gpgcheck: yes
-    gpgkey: http://pkg.jenkins.io/redhat-stable/jenkins.io.key
-    state: present
+    - name: Start Jenkins service
+      service:
+        name: jenkins
+        state: started
+      become: true
+    - name: Wait for Jenkins to start up
+      wait_for:
+        path: /var/lib/jenkins/secrets/initialAdminPassword
+        state: present
+        timeout: 30
+      become: true
 
-- name: Install Jenkins
-  yum:
-    name: jenkins
-    state: latest
+    - name: Read initial Jenkins admin password
+      slurp:
+        src: /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_admin_password
+      become: true
 
-- name: Start and enable Jenkins service
-  systemd:
-    name: jenkins
-    state: started
-    enabled: yes
-
-
-
-
+    - name: Print initial Jenkins admin password
+      debug:
+        msg: "Initial Jenkins admin password: {{ jenkins_admin_password.content | b64decode }}"
