@@ -68,12 +68,12 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 sh "echo done "
-            // buildPushtoHub([
-            // image: "${imageName}:${BUILD_NUMBER}",
-            // DockerCredentials: 'DOCKERHUB',
-            // dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
-            // context: 'Application' // Optional: Specify the build context directory
-            //      ]) 
+            buildPushtoHub([
+            image: "${imageName}:${BUILD_NUMBER}",
+            DockerCredentials: 'DOCKERHUB',
+            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            context: 'Application' // Optional: Specify the build context directory
+                 ]) 
                   }  
                   }
 
