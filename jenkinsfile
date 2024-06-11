@@ -81,19 +81,11 @@ pipeline {
         stage('Check and Install OpenShift CLI') {
     steps {
         script {
-            // Check if 'oc' command exists
-            def ocInstalled = sh(script: 'command -v oc', returnStatus: true) == 0
             
-            if (!ocInstalled) {
-                echo 'OpenShift CLI not found. Installing...'
-                // Run the install script
-                sh 'chmod +x scripts/install-oc.sh'
-                sh 'scripts/install-oc.sh'
-            } else {
-                echo 'OpenShift CLI is already installed. Checking version...'
-                // Check the version of oc CLI
+                sh "chmod +x install_oc.sh"
+                sh "./scripts/install_oc.sh"
                 sh 'oc version'
-            }
+            
         }
     }
 }
