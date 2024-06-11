@@ -42,6 +42,23 @@ pipeline {
                         }
 
 
+                stage('test') {
+                    steps {
+                    script{
+                        sh '''
+                            cd Application
+                            chmod +x ./gradlew
+                            ./gradlew test 
+                        '''
+
+
+                        
+                    }
+                    }
+                }
+
+
+
         stage('SonarQube Analysis') {
 
             steps {
@@ -58,30 +75,20 @@ pipeline {
  
 
 
-        // stage('test') {
-        //     steps {
-        //        script{
-        //             sh '  chmod +x gradlew  '
-                             
-        //              sh '  ./gradlew test '
-
-
-                
-        //        }
-        //     }
-        // }
+        
 
         
         stage('Build and Push Docker Image') {
             steps {
-                
-                script {
-                    sh 'cd Application'
-                    buildPushtoHub([ image: "${imageName}:${BUILD_NUMBER}", DockerCredentials: 'DOCKERHUB' ])
-                  
-                } 
-            
-            }
+         
+            buildPushtoHub([
+            image: "${imageName}:${BUILD_NUMBER}",
+            DockerCredentials: 'DOCKERHUB',
+            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            context: 'Application' // Optional: Specify the build context directory
+        ])
+        
+    }
         }
         //         stage('kubernetes') {
         //     steps {
