@@ -94,12 +94,8 @@ pipeline {
 
                 stage('Deploy in cluster') {
         steps {
-                UsingServiceAccount([
-                        credentialsId: 'JENKINS_SERVICE_ACCOUNT', // Provide your credentials ID
-                        ClusterUrl: '192.168.49.2:8443', // Provide your cluster URL
-                        file: 'kubernetes/Deploument.yml', // Provide the name of your YAML file
-                        namespace: 'defulat' // Provide the namespace
-                    ])
+             sh "kubectl apply -f kubernetes/Deploument.yml "
+             sh "kubectl get all"
                 }
            
 }
