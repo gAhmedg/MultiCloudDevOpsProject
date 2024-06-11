@@ -23,16 +23,33 @@ pipeline {
                                 sh './gradlew tasks'
                             }
                         }
-                        stage('build') {
-            steps {
-               script{
-                    sh '   chmod +x gradlew  '
-        
-                    sh '  ./gradlew build '
-                
-               }
-            }
-        }
+                        
+
+
+
+
+
+
+
+                stage('build') {
+                            steps {
+                            script{
+                                    sh '   chmod +x gradlew  '
+                        
+                                    sh '  ./gradlew build '
+                                
+                            }
+                            }
+                        }
+
+
+
+
+
+
+
+
+
 
         stage('SonarQube Analysis') {
 
