@@ -56,10 +56,6 @@ pipeline {
  
 
 
-
-    
-
-
         // stage('test') {
         //     steps {
         //        script{
@@ -76,11 +72,12 @@ pipeline {
         
         stage('Build and Push Docker Image') {
             steps {
+                dir('Application') {
                 script {
-                    sh'''cd Application
                     buildPushtoHub([ image: "${imageName}:${BUILD_NUMBER}", DockerCredentials: 'DOCKERHUB' ])
-                    '''
+                  
                 } 
+            }
             }
         }
         //         stage('kubernetes') {
