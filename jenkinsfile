@@ -67,13 +67,15 @@ pipeline {
   
         stage('Build and Push Docker Image') {
             steps {
-         
-            buildPushtoHub([
-            image: "${imageName}:${BUILD_NUMBER}",
-            DockerCredentials: 'DOCKERHUB',
-            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
-            context: 'Application' // Optional: Specify the build context directory
-                 ])  }   }
+                sh "echo done "
+            // buildPushtoHub([
+            // image: "${imageName}:${BUILD_NUMBER}",
+            // DockerCredentials: 'DOCKERHUB',
+            // dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            // context: 'Application' // Optional: Specify the build context directory
+            //      ]) 
+                  }  
+                  }
 
 
 
@@ -82,7 +84,7 @@ pipeline {
     steps {
         script {
             
-                sh "chmod +x ./scripts/install_oc.sh"
+                sh "chmod +x scripts/install_oc.sh"
                 sh "./scripts/install_oc.sh"
                 sh 'oc version'
             
