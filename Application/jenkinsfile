@@ -74,16 +74,15 @@ pipeline {
         
         stage('Build and Push Docker Image') {
             steps {
-                
-                script {
-                    sh 'cd Application'
-                    sh' docker ps '
-                    sh 'ls -l '
-                    buildPushtoHub([ image: "${imageName}:${BUILD_NUMBER}", DockerCredentials: 'DOCKERHUB' ])
-                  
-                } 
-            
-            }
+         
+            buildPushtoHub([
+            image: "${imageName}:${BUILD_NUMBER}",
+            DockerCredentials: 'DOCKERHUB',
+            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            context: 'Application' // Optional: Specify the build context directory
+        ])
+        
+    }
         }
         //         stage('kubernetes') {
         //     steps {
