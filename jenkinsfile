@@ -1,15 +1,17 @@
 @Library('shared-library') _
 
-// agent {
-//         label 'slave2'
-//     }
 pipeline {
+
+
     environment {
+
         imageName = 'algn48/spring-boot-app'
-    }
-    agent {
-        label 'slave2'
-    }
+
+         }
+
+    agent { label 'slave2' }
+    
+    
     stages {
         
          stage('Verify Branch') {
@@ -17,8 +19,6 @@ pipeline {
                 echo "$GIT_BRANCH"
             }
         }
-
-        
                 stage('List Tasks') {
                             steps {
                                 sh '''
@@ -31,36 +31,33 @@ pipeline {
                         
                 stage('build') {
                             steps {
-                            script{
-                                sh '''
-                                    cd Application
-                                    chmod +x ./gradlew
-                                      ./gradlew build '''
-                                
-                            }
+                                          echo 'test'
+                            // script{
+                            //     sh '''
+                            //         cd Application
+                            //         chmod +x ./gradlew
+                            //           ./gradlew build '''                              
+                            // }
                             }
                         }
 
-
                 stage('test') {
                     steps {
-                    script{
-                        sh '''
-                            cd Application
-                            chmod +x ./gradlew
-                            ./gradlew test 
-                        '''
+                                        echo 'test'
 
-
+                    // script{
+                    //     sh '''
+                    //         cd Application
+                    //         chmod +x ./gradlew
+                    //         ./gradlew test 
+                    //     '''
                         
-                    }
+                    // }
                     }
                 }
-
-
+                echo 'test'
 
         stage('SonarQube Analysis') {
-
             steps {
                withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
                     sh '''
@@ -68,28 +65,41 @@ pipeline {
                                     chmod +x ./gradlew
                                     ./gradlew sonarqube --info
                         '''
-                    
                     }
             }
         }
- 
-
-
-        
-
-        
+  
         stage('Build and Push Docker Image') {
-            steps {
+            steps {                echo 'test'
+
          
-            buildPushtoHub([
-            image: "${imageName}:${BUILD_NUMBER}",
-            DockerCredentials: 'DOCKERHUB',
-            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
-            context: 'Application' // Optional: Specify the build context directory
-        ])
-        
-    }
+            // buildPushtoHub([
+            // image: "${imageName}:${BUILD_NUMBER}",
+            // DockerCredentials: 'DOCKERHUB',
+            // dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            // context: 'Application' // Optional: Specify the build context directory
+            //      ])  
+            }   }
+
+
+
+
+                 stage('Check and Install OpenShift CLI') {
+    steps {
+        script {
+            // Check if 'oc' command exists
+            def ocInstalled = sh(script: 'command -v oc', returnStatus: true) == 0
+            
+            if (!ocInstalled) {
+                echo 'OpenShift CLI not found. Installing...'
+                // Run the install script
+                sh 'chmod +x scripts/install-oc.sh'
+                sh 'scripts/install-oc.sh'
+            } else {
+                echo 'OpenShift CLI is already installed. Skipping installation.'
+            }
         }
+    }
         //         stage('kubernetes') {
         //     steps {
         //        withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: '4', namespace: 'ahmedgomaa', serverUrl: 'https://api.ocp-training.ivolve-test.com:6443']]) {    
