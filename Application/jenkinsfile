@@ -22,7 +22,7 @@ pipeline {
                 stage('List Tasks') {
                             steps {
                                 sh '''
-                                    cd Application
+                                   
                                     chmod +x ./gradlew
                                     ./gradlew tasks
                                     '''
@@ -33,7 +33,7 @@ pipeline {
                             steps {
                             script{
                                 sh '''
-                                    cd Application
+                                 
                                     chmod +x ./gradlew
                                       ./gradlew build '''
                                 
@@ -47,7 +47,7 @@ pipeline {
             steps {
                withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
                     sh '''
-                                    cd Application
+                                
                                     chmod +x ./gradlew
                                     ./gradlew sonarqube --info
                         '''
@@ -76,7 +76,7 @@ pipeline {
             steps {
                 
                 script {
-                    sh 'cd Application'
+                    
                     buildPushtoHub([ image: "${imageName}:${BUILD_NUMBER}", DockerCredentials: 'DOCKERHUB' ])
                   
                 } 
