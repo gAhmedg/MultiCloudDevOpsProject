@@ -1,13 +1,15 @@
 @Library('shared-library') _
 
-agent {
-        label 'slave2'
-    }
+// agent {
+//         label 'slave2'
+//     }
 pipeline {
     environment {
         imageName = 'algn48/spring-boot-app'
     }
-    agent any
+    agent {
+        label 'slave2'
+    }
     stages {
         
          stage('Verify Branch') {
