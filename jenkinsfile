@@ -13,11 +13,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/EngMohamedElEmam/spring-boot-app'
+                    git branch: 'main', url: 'https://github.com/gAhmedg/spring-boot-app.git'
                 }
             }
         }
-
+        
+                stage('List Tasks') {
+                            steps {
+                                sh './gradlew tasks'
+                            }
+                        }
 
         stage('SonarQube Analysis') {
 
