@@ -66,16 +66,16 @@ pipeline {
 
 
 
-        stage('build') {
-            steps {
-               script{
-                    sh '   chmod +x gradlew  '
+        // stage('build') {
+        //     steps {
+        //        script{
+        //             sh '   chmod +x gradlew  '
         
-                    sh '  ./gradlew build '
+        //             sh '  ./gradlew build '
                 
-               }
-            }
-        }
+        //        }
+        //     }
+        // }
 
         // stage('test') {
         //     steps {
