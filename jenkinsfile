@@ -94,24 +94,12 @@ pipeline {
 
                 stage('Deploy in cluster') {
         steps {
+             sh "sed -i 's|image:.*|image: ${imageName}:${BUILD_NUMBER}|' kubernetes/Deployment.yml"
              sh "kubectl apply -f kubernetes/Deploument.yml "
              sh "kubectl get all"
                 }
            
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
