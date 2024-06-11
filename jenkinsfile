@@ -30,8 +30,10 @@ pipeline {
                 stage('build') {
                             steps {
                             script{
-                                sh '   chmod +x gradlew  '
-                                    sh '  ./gradlew build '
+                                sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                      ./gradlew build '''
                                 
                             }
                             }
