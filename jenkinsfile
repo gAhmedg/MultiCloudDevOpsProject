@@ -96,7 +96,7 @@ pipeline {
                 stage('Deploy in cluster') {
         steps {
             sh "ls"
-             sh "sed 's|image:.*|image: ${imageName}:${BUILD_NUMBER}|' ${yamlfiles} > ${yamlfiles}"
+             sh 'sed -i "s|image:.*|image: ${imageName}:${BUILD_NUMBER}|" ${yamlfiles} '
              sh "kubectl apply -f ${yamlfiles} "
              sh "kubectl get all"
                 }
