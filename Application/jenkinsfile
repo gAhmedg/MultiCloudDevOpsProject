@@ -1,56 +1,101 @@
+@Library('shared-library') _
+
+// agent {
+//         label 'slave2'
+//     }
 pipeline {
-    agent any
-
     environment {
-        DOCKER_REGISTRY = 'docker.io/mohamedemam2020'
-        DOCKER_IMAGE = 'spring-boot-app'
-        OPENSHIFT_PROJECT = 'nti'
-        OPENSHIFT_SERVER = 'https://api.ocpuat.devopsconsulting.org:6443'
-        APP_SERVICE_NAME = 'spring-boot-app'
-        APP_PORT = '8080'
-        APP_HOST_NAME = 'spring-boot-app.apps.ocpuat.devopsconsulting.org'
+        imageName = 'algn48/spring-boot-app'
     }
-
+    agent {
+        label 'slave2'
+    }
     stages {
-        stage('Checkout') {
+        
+         stage('Verify Branch') {
             steps {
-                script {
-                    git branch: 'main', url: 'https://github.com/EngMohamedElEmam/spring-boot-app'
-                }
+                echo "$GIT_BRANCH"
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BUILD_NUMBER}")
-                }
-            }
-        }
+        
+                stage('List Tasks') {
+                            steps {
+                                sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                    ./gradlew tasks
+                                    '''
+                            }
+                        }
+                        
+                stage('build') {
+                            steps {
+                            script{
+                                sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                      ./gradlew build '''
+                                
+                            }
+                            }
+                        }
 
-        stage('Push Docker Image') {
+
+        stage('SonarQube Analysis') {
+
             steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'DOCKER_REGISTRY_USERNAME', passwordVariable: 'DOCKER_REGISTRY_PASSWORD')]) {
-                        sh "echo \${DOCKER_REGISTRY_PASSWORD} | docker login -u \${DOCKER_REGISTRY_USERNAME} --password-stdin"
-                        docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BUILD_NUMBER}").push()
+               withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
+                    sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                    ./gradlew sonarqube --info
+                        '''
+                    
                     }
-                }
             }
         }
+ 
 
-        stage('Deploy to OpenShift') {
+
+        // stage('test') {
+        //     steps {
+        //        script{
+        //             sh '  chmod +x gradlew  '
+                             
+        //              sh '  ./gradlew test '
+
+
+                
+        //        }
+        //     }
+        // }
+
+        
+        stage('Build and Push Docker Image') {
             steps {
+                
                 script {
-                    withCredentials([string(credentialsId: 'openshift-credentials', variable: 'OPENSHIFT_SECRET')]) {
-                    sh "oc login --token=\${OPENSHIFT_SECRET} \${OPENSHIFT_SERVER} --insecure-skip-tls-verify"
-                    }
-                    sh "oc project \${OPENSHIFT_PROJECT}"
-                    sh "oc delete dc,svc,deploy,ingress,route \${DOCKER_IMAGE} || true"
-                    sh "oc new-app \${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BUILD_NUMBER}"
-                    sh "oc create route edge --service \${APP_SERVICE_NAME} --port \${APP_PORT} --hostname \${APP_HOST_NAME} --insecure-policy Redirect"
-                }
+                    sh 'cd Application'
+                    buildPushtoHub([ image: "${imageName}:${BUILD_NUMBER}", DockerCredentials: 'DOCKERHUB' ])
+                  
+                } 
+            
             }
         }
+        //         stage('kubernetes') {
+        //     steps {
+        //        withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: '4', namespace: 'ahmedgomaa', serverUrl: 'https://api.ocp-training.ivolve-test.com:6443']]) {    
+        //          sh 'kubectl apply -f DeplymentAndSvc.yml -n ahmedgomaa'
+                 
+        //     }
+        //     }
+        // }
+
+
+
+
+
+
     }
 }
