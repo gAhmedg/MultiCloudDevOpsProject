@@ -22,11 +22,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-sonarqube {
+sonar {
     properties {
         property "sonar.projectKey", "jenkins-app"
         property "sonar.host.url", "http://54.163.48.236:9000"
         property "sonar.login", "sqa_f8682f96f3a69105e410446c26b0166229b4c888" // or use credentials block if using username/password
         property "sonar.java.binaries", "${project.buildDir}/classes/java/main"    
+        property "sonar.sources", "src/main" 
     }
 }
