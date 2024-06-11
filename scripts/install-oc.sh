@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Update the system packages
-sudo yum update -y
+# Ignore the Corretto repository specifically
+sudo yum-config-manager --disable corretto
+
+# Update the system packages while ignoring the Corretto repository
+sudo yum update --disablerepo=corretto -y || true
 
 # Install necessary dependencies
 sudo yum install -y wget tar
