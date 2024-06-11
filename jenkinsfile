@@ -78,22 +78,23 @@ pipeline {
 
 
 
-                 stage('Check and Install OpenShift CLI') {
-    steps {
-        script {
-            // Check if 'oc' command exists
-            def ocInstalled = sh(script: 'command -v oc', returnStatus: true) == 0
-            
-            if (!ocInstalled) {
-                echo 'OpenShift CLI not found. Installing...'
-                // Run the install script
-                sh 'chmod +x scripts/install-oc.sh'
-                sh 'scripts/install-oc.sh'
-            } else {
-                echo 'OpenShift CLI is already installed. Skipping installation.'
+        stage('Check and Install OpenShift CLI') {
+            steps {
+                script {
+                    // Check if 'oc' command exists
+                    def ocInstalled = sh(script: 'command -v oc', returnStatus: true) == 0
+                    
+                    if (!ocInstalled) {
+                        echo 'OpenShift CLI not found. Installing...'
+                        // Run the install script
+                        sh 'chmod +x scripts/install-oc.sh'
+                        sh 'scripts/install-oc.sh'
+                    } else {
+                        echo 'OpenShift CLI is already installed. Skipping installation.'
+                    }
+                }
             }
         }
-    }
         //         stage('kubernetes') {
         //     steps {
         //        withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: '4', namespace: 'ahmedgomaa', serverUrl: 'https://api.ocp-training.ivolve-test.com:6443']]) {    
