@@ -4,7 +4,15 @@ provider "aws" {
 #           access_key = "my-access-key"
 #   secret_key = "my-secret-key"
 }
-
+terraform {
+    backend "s3" {
+        bucket         = "ivolve-remote-statefile"
+        key            = "terraform.tfstate"
+        region         = "us-east-1"
+        dynamodb_table = "ivolve-locks"
+        encrypt        = true
+    }
+}
 
 
 module "ec2" {

@@ -20,10 +20,10 @@ variable "private_cidr" {
 
 variable "instance_type" {
     type = string
-    default = "t2.micro"
+    default = "t2.large"
 }
 
 variable "ami" {
     type = string
-    default = "ami-04b70fa74e45c3917"
+    default = "ami-08a0d1e16fc3f61ea"
 }
