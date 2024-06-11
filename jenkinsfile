@@ -21,6 +21,7 @@ pipeline {
                             steps {
                                 sh '''
                                     cd Application
+                                    chmod +x ./gradlew
                                     ./gradlew tasks
                                     '''
                             }
