@@ -23,7 +23,6 @@ pipeline {
 
             steps {
                withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
-                 sh ' cd spring-boot-app '
                  sh '   chmod +x gradlew  '
                 //  sh ' gradle wrapper'
                     sh "./gradlew sonarqube"
