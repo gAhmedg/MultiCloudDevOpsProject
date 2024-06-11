@@ -84,8 +84,8 @@ pipeline {
     steps {
         script {
             
-                sh "chmod +x scripts/install_oc.sh"
-                sh "./scripts/install_oc.sh"
+                sh "chmod +x scripts/install-oc.sh"
+                sh "./scripts/install-oc.sh"
                 sh 'oc version'
             
         }
