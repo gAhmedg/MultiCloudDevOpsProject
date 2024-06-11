@@ -36,4 +36,4 @@ install_oc() {
 # Main script logic
 if ! check_oc_installed; then
     install_oc
-fi
+fi 
