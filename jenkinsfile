@@ -93,7 +93,7 @@ pipeline {
 }
 
                 stage('Deploy in cluster') {
-
+ steps {
                 ([
                         credentialsId: 'JENKINS_SERVICE_ACCOUNT', // Provide your credentials ID
                         ClusterUrl: '192.168.49.2:8443', // Provide your cluster URL
@@ -102,7 +102,7 @@ pipeline {
                     ])
                 }
            
-
+}
 
 
 
