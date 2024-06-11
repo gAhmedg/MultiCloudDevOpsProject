@@ -10,45 +10,29 @@ pipeline {
     agent any
     stages {
         
-        stage('Checkout') {
+         stage('Verify Branch') {
             steps {
-                script {
-                    git branch: 'main', url: 'https://github.com/gAhmedg/spring-boot-app.git'
-                }
+                echo "$GIT_BRANCH"
             }
         }
+
         
                 stage('List Tasks') {
                             steps {
+                                sh 'cd Application'
                                 sh './gradlew tasks'
                             }
                         }
                         
-
-
-
-
-
-
-
                 stage('build') {
                             steps {
                             script{
-                                    sh '   chmod +x gradlew  '
-                        
+                                sh '   chmod +x gradlew  '
                                     sh '  ./gradlew build '
                                 
                             }
                             }
                         }
-
-
-
-
-
-
-
-
 
 
         stage('SonarQube Analysis') {
