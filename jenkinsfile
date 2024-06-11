@@ -31,31 +31,27 @@ pipeline {
                         
                 stage('build') {
                             steps {
-                                          echo 'test'
-                            // script{
-                            //     sh '''
-                            //         cd Application
-                            //         chmod +x ./gradlew
-                            //           ./gradlew build '''                              
-                            // }
+                            script{
+                                sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                      ./gradlew build '''                              
+                            }
                             }
                         }
 
                 stage('test') {
                     steps {
-                                        echo 'test'
-
-                    // script{
-                    //     sh '''
-                    //         cd Application
-                    //         chmod +x ./gradlew
-                    //         ./gradlew test 
-                    //     '''
+                    script{
+                        sh '''
+                            cd Application
+                            chmod +x ./gradlew
+                            ./gradlew test 
+                        '''
                         
-                    // }
+                    }
                     }
                 }
-                echo 'test'
 
         stage('SonarQube Analysis') {
             steps {
@@ -70,16 +66,14 @@ pipeline {
         }
   
         stage('Build and Push Docker Image') {
-            steps {                echo 'test'
-
+            steps {
          
-            // buildPushtoHub([
-            // image: "${imageName}:${BUILD_NUMBER}",
-            // DockerCredentials: 'DOCKERHUB',
-            // dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
-            // context: 'Application' // Optional: Specify the build context directory
-            //      ])  
-            }   }
+            buildPushtoHub([
+            image: "${imageName}:${BUILD_NUMBER}",
+            DockerCredentials: 'DOCKERHUB',
+            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            context: 'Application' // Optional: Specify the build context directory
+                 ])  }   }
 
 
 
@@ -115,4 +109,4 @@ pipeline {
 
 
     }
-}}
+}
