@@ -19,9 +19,10 @@ pipeline {
         
                 stage('List Tasks') {
                             steps {
-                                sh 'cd Application'
-                                sh 'ls '
-                                sh './gradlew tasks'
+                                sh '''
+                                    cd Application
+                                    ./gradlew tasks
+                                    '''
                             }
                         }
                         
