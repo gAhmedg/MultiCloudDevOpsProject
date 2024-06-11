@@ -31,3 +31,9 @@ sonar {
         property "sonar.sources", "src/main" 
     }
 }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    sourceSets.main.java.srcDirs = ['src']
+}
