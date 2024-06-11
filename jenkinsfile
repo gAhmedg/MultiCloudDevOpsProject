@@ -92,14 +92,26 @@ pipeline {
     }
 }
 
-        //         stage('kubernetes') {
-        //     steps {
-        //        withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: '4', namespace: 'ahmedgomaa', serverUrl: 'https://api.ocp-training.ivolve-test.com:6443']]) {    
-        //          sh 'kubectl apply -f DeplymentAndSvc.yml -n ahmedgomaa'
-                 
-        //     }
-        //     }
-        // }
+                stage('Deploy in cluster') {
+
+                ([
+                        credentialsId: 'JENKINS_SERVICE_ACCOUNT', // Provide your credentials ID
+                        ClusterUrl: '192.168.49.2:8443', // Provide your cluster URL
+                        file: 'kubernetes/Deploument.yml', // Provide the name of your YAML file
+                        namespace: 'defulat' // Provide the namespace
+                    ])
+                }
+           
+
+
+
+
+
+
+
+
+
+
 
 
 
