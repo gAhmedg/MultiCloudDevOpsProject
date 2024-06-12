@@ -72,14 +72,14 @@ pipeline {
         }
   
         stage('Build and Push Docker Image') {
-            steps {
+             steps {
                 sh "echo done "
-            buildPushtoHub([
-            image: "${imageName}:${BUILD_NUMBER}",
-            DockerCredentials: 'DOCKERHUB',
-            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
-            context: 'Application' // Optional: Specify the build context directory
-                 ]) 
+            // buildPushtoHub([
+            // image: "${imageName}:${BUILD_NUMBER}",
+            // DockerCredentials: 'DOCKERHUB',
+            // dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            // context: 'Application' // Optional: Specify the build context directory
+            //      ]) 
                   }  
                   }
 
@@ -99,20 +99,7 @@ pipeline {
 }
 
                 stage('Deploy in cluster') {
-        steps {
-            sh "ls"
-            //  sh 'sed -i "s|image:.*|image: ${imageName}:${BUILD_NUMBER}|" ${yamlfiles} '
-            //  sh "kubectl apply -f ${yamlfiles} "
-            //  sh "kubectl get all"
-                }
-           
-}
-
-
-
-        stage('Deploy to OpenShift') {
-            steps {
-                script {
+        steps {script {
                 //     withCredentials([usernamePassword(credentialsId: 'OPEN_SHIFT_LOGIN', passwordVariable: 'OPEN_SHIFT_PASSWD', usernameVariable: 'OPEN_SHIFT_USER')]) {
                 //     // some block
                 // }
@@ -120,17 +107,22 @@ pipeline {
                 withCredentials([string(credentialsId: 'OPEN_SHIFT_TOKEN_LOGIN', variable: 'OPEN_SHIFT_TOKEN')]) {
 
                     sh " oc login --token=\${OPEN_SHIFT_TOKEN} --server=${ClusterUrl} --insecure-skip-tls-verify "
-                    sh "oc new-app \${REGISTRY}/${imageName}:${BUILD_NUMBER}"  
-                    sh "oc create route edge --service \${SERVICE_NAME} --port \${PORT} --hostname \${HOST_NAME} --insecure-policy Redirect"
+                    sh "oc new-app \${REGISTRY}/${imageName}:80"  
+                    sh "oc create route --service \${SERVICE_NAME} --port \${PORT} --insecure-policy Redirect"
+                    sh "oc get route"
 
                       }
 
     
 
                 }
-            }
-        }
+                }
+           
+}
 
+
+
+   
 
     }
 }
