@@ -102,7 +102,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'OPEN_SHIFT_TOKEN_LOGIN', variable: 'OPEN_SHIFT_TOKEN')]) {
 
                     sh " oc login --token=\${OPEN_SHIFT_TOKEN} --server=${ClusterUrl} --insecure-skip-tls-verify "
-                    sh "oc new-app \${REGISTRY}/${imageName}:80"  
+                    sh "oc new-app \${REGISTRY}/${imageName}:${BUILD_NUMBER}"  
                     sh "oc expose service/${SERVICE_NAME} "
                     sh "oc get route"
 
