@@ -7,7 +7,11 @@ pipeline {
 
         imageName = 'algn48/spring-boot-app'
         yamlfiles = 'kubernetes/Deploument.yml'
-
+        ClusterUrl = 'https://api.ocp-training.ivolve-test.com:6443'
+        REGISTRY = 'docker.io'
+        HOST_NAME = 'spring-boot-app.apps.ivolve'
+        SERVICE_NAME = 'spring-boot-app'
+        PORT = '8080'
          }
 
     agent { label 'slave2' }
@@ -102,6 +106,29 @@ pipeline {
                 }
            
 }
+
+
+
+        stage('Deploy to OpenShift') {
+            steps {
+                script {
+                //     withCredentials([usernamePassword(credentialsId: 'OPEN_SHIFT_LOGIN', passwordVariable: 'OPEN_SHIFT_PASSWD', usernameVariable: 'OPEN_SHIFT_USER')]) {
+                //     // some block
+                // }
+
+                withCredentials([string(credentialsId: 'OPEN_SHIFT_TOKEN_LOGIN', variable: 'OPEN_SHIFT_TOKEN')]) {
+
+                    sh " oc login --token= ${OPEN_SHIFT_TOKEN} --server=${ClusterUrl}"//--insecure-skip-tls-verify 
+                    sh "oc new-app \${REGISTRY}/${imageName}:${BUILD_NUMBER}"  
+                    sh "oc create route edge --service \${SERVICE_NAME} --port \${PORT} --hostname \${HOST_NAME} --insecure-policy Redirect"
+
+                      }
+
+    
+
+                }
+            }
+        }
 
 
     }
