@@ -473,7 +473,7 @@ This step performs code analysis using SonarQube to ensure code quality.
 ![alt text](screenshots/sonar2.png)
 - Step 6: Build and Push Docker Image
     - This step builds the Docker image for the application and pushes it to Docker Hub using custom shared library steps.
-    - tages is number of buildfir jenkinsfile 
+    - tages is number of build jenkinsfile 
 
     ![alt text](screenshots/4dockerhub.png)
     in this stage we using Shared library for 
