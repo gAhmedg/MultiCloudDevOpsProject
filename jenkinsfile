@@ -9,7 +9,7 @@ pipeline {
         yamlfiles = 'kubernetes/Deploument.yml'
         ClusterUrl = 'https://api.ocp-training.ivolve-test.com:6443'
         REGISTRY = 'docker.io'
-        HOST_NAME = 'spring-boot-app.apps.ivolve.ocp-training.ivolve-test.com'
+        HOST_NAME = 'spring-boot-app.apps.ocp-training.ivolve-test.com'
         SERVICE_NAME = 'spring-boot-app'
         PORT = '8080'
          }
@@ -108,7 +108,7 @@ pipeline {
 
                     sh " oc login --token=\${OPEN_SHIFT_TOKEN} --server=${ClusterUrl} --insecure-skip-tls-verify "
                     sh "oc new-app \${REGISTRY}/${imageName}:80"  
-                    sh "oc create route --service \${SERVICE_NAME} --port \${PORT} --insecure-policy Redirect"
+                    sh "oc expose service/${SERVICE_NAME} "
                     sh "oc get route"
 
                       }
