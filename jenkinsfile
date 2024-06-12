@@ -9,7 +9,7 @@ pipeline {
         yamlfiles = 'kubernetes/Deploument.yml'
         ClusterUrl = 'https://api.ocp-training.ivolve-test.com:6443'
         REGISTRY = 'docker.io'
-        HOST_NAME = 'spring-boot-app.apps.ivolve'
+        HOST_NAME = 'spring-boot-app.apps.ivolve.ocp-training.ivolve-test.com'
         SERVICE_NAME = 'spring-boot-app'
         PORT = '8080'
          }
@@ -26,11 +26,12 @@ pipeline {
         }
                 stage('List Tasks') {
                             steps {
-                                sh '''
-                                    cd Application
-                                    chmod +x ./gradlew
-                                    ./gradlew tasks
-                                    '''
+                                 sh "ls"
+                                // sh '''
+                                //     cd Application
+                                //     chmod +x ./gradlew
+                                //     ./gradlew tasks
+                                //     '''
                             }
                         }
                         
