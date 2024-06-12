@@ -9,9 +9,7 @@ pipeline {
         yamlfiles = 'kubernetes/Deploument.yml'
         ClusterUrl = 'https://api.ocp-training.ivolve-test.com:6443'
         REGISTRY = 'docker.io'
-        HOST_NAME = 'spring-boot-app.apps.ocp-training.ivolve-test.com'
         SERVICE_NAME = 'spring-boot-app'
-        PORT = '8080'
          }
 
     agent { label 'slave2' }
@@ -26,12 +24,12 @@ pipeline {
         }
                 stage('List Tasks') {
                             steps {
-                                 sh "ls"
-                                // sh '''
-                                //     cd Application
-                                //     chmod +x ./gradlew
-                                //     ./gradlew tasks
-                                //     '''
+                                 
+                                sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                    ./gradlew tasks
+                                    '''
                             }
                         }
                         
@@ -73,20 +71,20 @@ pipeline {
   
         stage('Build and Push Docker Image') {
              steps {
-                sh "echo done "
-            // buildPushtoHub([
-            // image: "${imageName}:${BUILD_NUMBER}",
-            // DockerCredentials: 'DOCKERHUB',
-            // dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
-            // context: 'Application' // Optional: Specify the build context directory
-            //      ]) 
+               
+            buildPushtoHub([
+            image: "${imageName}:${BUILD_NUMBER}",
+            DockerCredentials: 'DOCKERHUB',
+            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            context: 'Application' // Optional: Specify the build context directory
+                 ]) 
                   }  
                   }
 
 
 
 
-        stage('Check and Install OpenShift CLI') {
+        stage('Verify Install OpenShift CLI ') {
     steps {
         script {
             
@@ -98,11 +96,8 @@ pipeline {
     }
 }
 
-                stage('Deploy in cluster') {
+                stage('Deploy to OpenShift') {
         steps {script {
-                //     withCredentials([usernamePassword(credentialsId: 'OPEN_SHIFT_LOGIN', passwordVariable: 'OPEN_SHIFT_PASSWD', usernameVariable: 'OPEN_SHIFT_USER')]) {
-                //     // some block
-                // }
 
                 withCredentials([string(credentialsId: 'OPEN_SHIFT_TOKEN_LOGIN', variable: 'OPEN_SHIFT_TOKEN')]) {
 
