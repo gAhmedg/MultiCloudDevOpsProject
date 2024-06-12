@@ -586,5 +586,17 @@ in this stage we using
 #### the Route of the Application
 ![alt text](screenshots/task0/url.png)
 
-## the Next step to merage to main branch
+### Additional Resources
+
+| Resource                         | Link                                                                                       |
+|----------------------------------|--------------------------------------------------------------------------------------------|
+| Ansible Documentation            | [Ansible Documentation](https://docs.ansible.com/)                                         |
+| Ansible Galaxy                   | [Ansible Galaxy](https://galaxy.ansible.com/)                                              |
+| Jenkins Documentation            | [Jenkins Documentation](https://www.jenkins.io/doc/)                                       |
+| Docker Documentation             | [Docker Documentation](https://docs.docker.com/)                                           |
+| Terraform Documentation          | [Terraform Documentation](https://www.terraform.io/docs/index.html)                        |
+| SonarQube Documentation          | [SonarQube Documentation](https://docs.sonarqube.org/latest/)                               |
+| OpenShift CLI Documentation      | [OpenShift CLI Documentation](https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html) |
+| AWS EC2 Documentation            | [AWS EC2 Documentation](https://docs.aws.amazon.com/ec2/index.html)                        |
+
 
