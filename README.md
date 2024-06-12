@@ -588,3 +588,49 @@ in this stage we using
 
 ## the Next step to merage to main branch
 
+
+### Updating Your Local Repository
+After a pull request has been merged from the dev branch to the main branch using the GitHub GUI, you can update your local repository with the latest changes from the main branch by following these steps:
+
+
+1. Navigate to your local repository:
+Open your terminal or command prompt and navigate to your local repository using the cd command. For example:
+
+```sh
+cd MultiCloudDevOpsProject
+```
+2. Fetch the latest changes from the remote repository:
+This command updates your local copy of the remote branches, but it doesn't merge any changes into your local branches yet.
+
+```sh
+git fetch origin
+```
+3. Switch to your local main branch:
+Ensure you are on the main branch where you want to pull the updates.
+
+```sh
+git checkout main
+```
+![alt text](screenshots/merge/1.png)
+
+4. Pull the latest changes into your local main branch:
+This command merges the changes from the remote main branch into your local main branch.
+
+```sh
+git pull origin main
+```
+![alt text](screenshots/merge/2.png)
+
+#### Verify the files in main branch 
+
+![alt text](screenshots/merge/3.png)
+
+#### Here is the complete sequence of commands:
+
+```sh
+cd /path/to/your/repository
+git fetch origin
+git checkout main
+git pull origin main
+```
+After running these commands, your local main branch will be up-to-date with the latest changes from the remote main branch.
