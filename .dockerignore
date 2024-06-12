@@ -1,0 +1,3 @@
+# .dockerignore file
+screenshots/
+terraform/

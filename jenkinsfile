@@ -1,0 +1,123 @@
+@Library('shared-library') _
+
+pipeline {
+
+
+    environment {
+
+        imageName = 'algn48/spring-boot-app'
+        yamlfiles = 'kubernetes/Deploument.yml'
+        ClusterUrl = 'https://api.ocp-training.ivolve-test.com:6443'
+        REGISTRY = 'docker.io'
+        SERVICE_NAME = 'spring-boot-app'
+         }
+
+    agent { label 'slave2' }
+    
+    
+    stages {
+        
+         stage('Verify Branch') {
+            steps {
+                echo "$GIT_BRANCH"
+            }
+        }
+                stage('List Tasks') {
+                            steps {
+                                 
+                                sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                    ./gradlew tasks
+                                    '''
+                            }
+                        }
+                        
+                stage('build') {
+                            steps {
+                            script{
+                                sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                      ./gradlew build '''                              
+                            }
+                            }
+                        }
+
+                stage('test') {
+                    steps {
+                    script{
+                        sh '''
+                            cd Application
+                            chmod +x ./gradlew
+                            ./gradlew test 
+                        '''
+                        
+                    }
+                    }
+                }
+
+        stage('SonarQube Analysis') {
+            steps {
+               withSonarQubeEnv(credentialsId: 'jenkins-sonar',installationName: 'sq1') {
+                    sh '''
+                                    cd Application
+                                    chmod +x ./gradlew
+                                    ./gradlew sonarqube --info
+                        '''
+                    }
+            }
+        }
+  
+        stage('Build and Push Docker Image') {
+             steps {
+               
+            buildPushtoHub([
+            image: "${imageName}:${BUILD_NUMBER}",
+            DockerCredentials: 'DOCKERHUB',
+            dockerfile: 'Application/Dockerfile', // Optional: Specify the path to the Dockerfile
+            context: 'Application' // Optional: Specify the build context directory
+                 ]) 
+                  }  
+                  }
+
+
+
+
+        stage('Verify Install OpenShift CLI ') {
+    steps {
+        script {
+            
+                sh "chmod +x scripts/install-oc.sh"
+                sh "./scripts/install-oc.sh"
+                sh 'oc version'
+            
+        }
+    }
+}
+
+                stage('Deploy to OpenShift') {
+        steps {script {
+
+                withCredentials([string(credentialsId: 'OPEN_SHIFT_TOKEN_LOGIN', variable: 'OPEN_SHIFT_TOKEN')]) {
+
+                    sh " oc login --token=\${OPEN_SHIFT_TOKEN} --server=${ClusterUrl} --insecure-skip-tls-verify "
+                    sh "oc new-app \${REGISTRY}/${imageName}:${BUILD_NUMBER}"  
+                    sh "oc expose service/${SERVICE_NAME} "
+                    sh "oc get route"
+
+                      }
+
+    
+
+                }
+                }
+           
+}
+
+
+
+   
+
+    }
+}
