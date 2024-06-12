@@ -100,9 +100,9 @@ pipeline {
                 stage('Deploy in cluster') {
         steps {
             sh "ls"
-             sh 'sed -i "s|image:.*|image: ${imageName}:${BUILD_NUMBER}|" ${yamlfiles} '
-             sh "kubectl apply -f ${yamlfiles} "
-             sh "kubectl get all"
+            //  sh 'sed -i "s|image:.*|image: ${imageName}:${BUILD_NUMBER}|" ${yamlfiles} '
+            //  sh "kubectl apply -f ${yamlfiles} "
+            //  sh "kubectl get all"
                 }
            
 }
@@ -118,7 +118,7 @@ pipeline {
 
                 withCredentials([string(credentialsId: 'OPEN_SHIFT_TOKEN_LOGIN', variable: 'OPEN_SHIFT_TOKEN')]) {
 
-                    sh " oc login --token= \${OPEN_SHIFT_TOKEN} --server=${ClusterUrl}"//--insecure-skip-tls-verify 
+                    sh " oc login --token=\${OPEN_SHIFT_TOKEN} --server=${ClusterUrl} --insecure-skip-tls-verify "
                     sh "oc new-app \${REGISTRY}/${imageName}:${BUILD_NUMBER}"  
                     sh "oc create route edge --service \${SERVICE_NAME} --port \${PORT} --hostname \${HOST_NAME} --insecure-policy Redirect"
 
