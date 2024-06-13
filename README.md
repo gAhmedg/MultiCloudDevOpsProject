@@ -3,7 +3,6 @@
 
 
 ![alt text](<screenshots/Untitled Diagram.drawio.svg>)
-
 ## Overview
 The MultiCloudDevOpsProject aims to establish a robust DevOps pipeline using modern tools and practices across multiple cloud environments. This project involves infrastructure provisioning with Terraform, configuration management with Ansible, containerization with Docker, continuous integration with Jenkins, and extensive monitoring and logging.
 
