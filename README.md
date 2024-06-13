@@ -161,6 +161,28 @@ terraform apply -auto-approve
 
 ![alt text](<screenshots/task2 terraform/5 verify-the-same-ip-from-console.png>)
 
+## EC2 Monitoring and Notification Setup using Terraform
+
+## Configuration
+Below are the configurations to be added to your Terraform files:
+
+![alt text](<screenshots/task2 terraform/cloudwatch.png>)
+
+### Steps
+### Step 1: Create an SNS Topic and Subscription
+create an SNS topic named cpu-utilization-topic to handle notifications.
+Ucreate a subscription to the SNS topic that will send notifications to your email address.
+ ![alt text](<screenshots/task2 terraform/cloudwatch2.png>) 
+
+### Step 2: Create a CloudWatch Alarm
+Ensure you have the ID of the EC2 instance you want to monitor. This instance ID will be used in the CloudWatch alarm configuration.
+ CloudWatch alarm that monitors the CPUUtilization metric of your EC2 instance.
+Configure the alarm to trigger when CPU utilization is greater than or equal to 70%
+
+ ![alt text](<screenshots/task2 terraform/cloudwatch3.png>)
+
+
+
 after we getting the ip from terraform we will pass it to Ansible inventory to run playbook on it 
 
 ## Configuration Management with Ansible
